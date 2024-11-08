@@ -7,15 +7,15 @@ import Register from './pages/register'
 import UserSettings from './pages/userSettings'
 import MyPermits from './pages/myPermits'
 import ParkingFinder from './pages/parkingFinder'
+import {Navbar} from './components/ui/navbar'
 import './App.css'
-import { Box } from '@chakra-ui/react';
 
 function App() {
 
   return (
     <>
     <BrowserRouter>
-    <Box>Navbar</Box>
+      <Navbar/>
       <Routes>
         <Route path="/home" element={<Index />} />
         <Route path="/login" element={<Login />} />

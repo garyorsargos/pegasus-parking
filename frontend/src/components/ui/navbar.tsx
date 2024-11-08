@@ -1,7 +1,9 @@
-import { Box, Button} from '@chakra-ui/react'
+import React, { Component } from 'react'
+import {Button, Box} from '@chakra-ui/react'
 
-function navbar() {
-  return (
+export class Navbar extends Component {
+  render() {
+    return (
     <div>
       <Box h="7%">
         <h1 id="siteHeaderText">Pegasus Parking</h1>
@@ -10,7 +12,8 @@ function navbar() {
         <Button variant="ghost">Account Details</Button>
       </Box>
     </div>
-  )
+    )
+  }
 }
 
-export default navbar
+export default Navbar
