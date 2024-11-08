@@ -26,9 +26,9 @@ jobs:
           ssh-add ~/.ssh/id_rsa
           ssh-keyscan -H "$AWS_CONTAINER_IP" >> ~/.ssh/known_hosts
           
-      - name: Pull Latest Code on Remote AWS Container
+      - name: Pull Latest Code on Remote AWS Container and Redeploy App
         env:
           AWS_CONTAINER_IP: ${{ secrets.AWS_CONTAINER_IP }}
           AWS_USER: ${{ secrets.AWS_USER }}
         run: |
-          ssh "$AWS_USER@$AWS_CONTAINER_IP" "cd pegasus-parking && git pull origin main"
+          ssh "$AWS_USER@$AWS_CONTAINER_IP" "pm2 delete index && pm2 delete pegasus-parking && cd pegasus-parking && git pull origin main && cd frontend && pm2 start --name pegasus-parking npm -- run dev --host && cd .. && cd server && pm2 start index.js"
