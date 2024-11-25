@@ -1,39 +1,26 @@
 const Users = require('../models/user');
+const passport = require('passport');
 
-const login = async (req, res) => {
-   const { userName, password } = req.body;
+const login = (req, res, cb) => {
+   passport.authenticate('local', (err, user, info) => {
 
-   if (!userName || !password) {
-      return res.status(400).json({ error: "Username and password are required." });
-   }
+      if (!user) return res.status(401).json({ error: info.message });
 
-   try {
-      //locates the user in the database
-      const user = await Users.findOne({ userName: userName });
+      req.logIn(user, (err) => {
+         if (err) return cb(err);
 
-      if (!user) {
-         return res.status(401).json({ error: "Username not found." });
-      }
-
-      //makes sure that the password inputed is correct
-      const validPassword = user.authenticate(password);
-
-      if (!validPassword) {
-         return res.status(401).json({ error: "Incorrect: Password." });
-      }
-
-      return res.status(200).json({
-         message: "Login Successful!",
-         user: {
-            username: user.userName,
-            userId: user.userId
-         }
+         res.json({
+            message: 'Login Successful!',
+            user: {
+               username: user.userName,
+               userId: user.userId,
+               firstname: user.firstName,
+               lastname: user.lastName,
+            },
+         });
       });
-   } catch (error) {
-      console.error(error);
-      return res.status(500).json({ error: "An error occurred while logging in." });
-   }
-}
+   })(req, res, cb);
+};
 
 const register = async (req, res) => {
    const { firstName, lastName, userName, password } = req.body;
@@ -43,7 +30,6 @@ const register = async (req, res) => {
    }
 
    try {
-      
       // checks if username taken
       const existingUser = await Users.findOne({ userName: userName });
 
@@ -54,10 +40,9 @@ const register = async (req, res) => {
       //creates a new user
       const user = new Users({ userName, password });
 
-      
       //optional fields
-      if(firstName) user.firstName = firstName;
-      if(lastName) user.lastName = lastName;
+      if (firstName) user.firstName = firstName;
+      if (lastName) user.lastName = lastName;
 
       //save this user to the database
       await user.save();
@@ -69,7 +54,28 @@ const register = async (req, res) => {
    }
 }
 
+const logout = async (req, res) => {
+   try {
+      req.logout((err) => {
+         if (err) {
+            return res.status(500).json({ error: "An error occurred during logout." });
+         }
+         req.session.destroy((err) => {
+            if (err) {
+               return res.status(500).json({ error: "An error occurred while destroying the session." });
+            }
+            res.clearCookie('connect.sid'); // clears user session
+            return res.json({ message: "Logout successful!" });
+         });
+      });
+   }
+   catch (error) {
+      return res.status(500).json({ error: "An error occurred while Logging Out." });;
+   }
+};
+
 module.exports = {
    login,
    register,
+   logout,
 }
