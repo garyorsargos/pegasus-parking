@@ -7,7 +7,7 @@ module.exports = (passport) => {
             try {
                 const user = await Users.findOne({ userName: userName });
                 if (!user) {
-                    return cd(null, false, { message: 'Username not found.' });
+                    return cb(null, false, { message: 'Username not found.' });
                 }
                 // hashes password with sha2-256 encryption using a randomly generated user's salt value to make it more secure from rainbow tables
                 const valid = user.authenticate(password);
