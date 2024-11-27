@@ -39,7 +39,7 @@ const UserSchema = new Schema({
     },
     //This field will make a reference to permits that are stored in the permits collection
     permits: [
-        { type: Schema.Types.ObjectId, ref: 'Permit' }
+        { type: Schema.Types.ObjectId, ref: 'Permits' }
     ],
 });
 
