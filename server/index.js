@@ -7,6 +7,7 @@ const { login, register, logout } = require("./controllers/auth");
 const fetchDistance = require('./controllers/distance');
 //for next PR
 //const setPermit = require('./controllers/permit');
+const checkPermits = require('./controllers/checkPermit');
 const app = express();
 
 app.use(express.json());
@@ -39,6 +40,7 @@ app.use('/logout', logout);
 app.use('/fetchDistance', fetchDistance);
 //for next PR
 //app.use('/setPermit', setPermit);
+app.use('/checkPermits', checkPermits)
 
 app.get('/', (req, res) => {
       res.send('Application Base Route Returned')
