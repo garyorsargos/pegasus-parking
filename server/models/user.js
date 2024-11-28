@@ -71,7 +71,7 @@ UserSchema.methods = {
     },
     authenticate: async function (password) {
         const hashedPassword = await this.passwordHash(password);
-        return hashedPassword == this.password;
+        return hashedPassword == password;
     },
 };
 
