@@ -16,11 +16,11 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
   // uncomment when used on https
-  // cookie: {
-  //   secure: true, 
-  //   httpOnly: true, 
-  //   sameSite: 'strict',
-  //},
+  cookie: {
+    secure: true, 
+    httpOnly: true, 
+    sameSite: 'strict',
+  },
 }));
 
 app.use(passport.initialize());
