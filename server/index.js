@@ -45,7 +45,7 @@ app.use('/setPermit', setPermit);
 app.use('/deletePermit', deletePermit);
 app.use('/checkPermits', checkPermits);
 
-app.get('/', (req, res) => {c
+app.get('/', (req, res) => {
       res.send('Application Base Route Returned')
 });
 
