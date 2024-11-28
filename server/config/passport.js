@@ -22,14 +22,23 @@ module.exports = (passport) => {
     ));
 
     passport.serializeUser((user, cb) => {
-        process.nextTick(function() {
-            cb(null, { id: user.userId, username: user.userName });
+        process.nextTick(function () {
+            cb(null, user.userId);
         })
     });
 
-    passport.deserializeUser((user, cb) => {
-        process.nextTick(function() {
-            return cb(null, user);
-        });
+    passport.deserializeUser(async (id, cb) => {
+        try {
+            const user = await Users.findOne({ userId: id });
+            if (!user) {
+                return cb(new Error('User not found.'));
+            }
+            process.nextTick(function () {
+                return cb(null, user);
+            });
+        }
+        catch (error) {
+            cb(error);
+        }
     });
 };

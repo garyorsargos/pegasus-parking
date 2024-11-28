@@ -43,7 +43,7 @@ const UserSchema = new Schema({
     ],
 });
 
-//I imported mongoose-sequencep to set an incrementing userId value,
+//I imported mongoose-sequence to set an incrementing userId value,
 //The import adds a extra field called "__v" in the Users collection
 UserSchema.plugin(autoIncrement, { inc_field: 'userId' });
 

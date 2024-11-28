@@ -3,7 +3,7 @@ const passport = require('passport');
 
 const login = (req, res, cb) => {
    passport.authenticate('local', (err, user, info) => {
-
+      if (err) return cb(err);
       if (!user) return res.status(401).json({ error: info.message });
 
       req.logIn(user, (err) => {

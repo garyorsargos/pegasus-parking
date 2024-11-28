@@ -4,9 +4,8 @@ const session = require('express-session');
 const connectToDatabase = require('./config/mongodb');
 const passportConfig = require('./config/passport');
 const { login, register, logout } = require("./controllers/auth");
+const { setPermit, deletePermit } = require('./controllers/permit');
 const fetchDistance = require('./controllers/distance');
-//for next PR
-//const setPermit = require('./controllers/permit');
 const checkPermits = require('./controllers/checkPermit');
 const app = express();
 
@@ -37,12 +36,16 @@ passportConfig(passport);
 app.use('/login', login);
 app.use('/register', register);
 app.use('/logout', logout);
-app.use('/fetchDistance', fetchDistance);
-//for next PR
-//app.use('/setPermit', setPermit);
-app.use('/checkPermits', checkPermits)
 
-app.get('/', (req, res) => {
+//Google map distance calculation
+app.use('/fetchDistance', fetchDistance);
+
+//Permit API calls
+app.use('/setPermit', setPermit);
+app.use('/deletePermit', deletePermit);
+app.use('/checkPermits', checkPermits);
+
+app.get('/', (req, res) => {c
       res.send('Application Base Route Returned')
 });
 

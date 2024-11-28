@@ -1,6 +1,4 @@
-const mongoose = require('mongoose');
 const Garages = require('../models/garage');
-const permits = require('../models/permit');
 
 const checkPermits = async (req, res) => {
    try {
