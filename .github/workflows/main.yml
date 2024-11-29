@@ -31,4 +31,4 @@ jobs:
           AWS_CONTAINER_IP: ${{ secrets.AWS_CONTAINER_IP }}
           AWS_USER: ${{ secrets.AWS_USER }}
         run: |
-          ssh "$AWS_USER@$AWS_CONTAINER_IP" "cd ~/htdocs/projects/pegasus-parking && git stash && git stash drop && git pull origin main"
+          ssh "$AWS_USER@$AWS_CONTAINER_IP" "cd ~/htdocs/projects/pegasus-parking && git pull origin main"
