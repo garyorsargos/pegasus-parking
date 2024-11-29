@@ -1,21 +1,54 @@
 import { Component } from "react";
 import { Box, Text, Flex, Spacer, Button, Badge } from "@chakra-ui/react";
+import { MdDirections } from "react-icons/md";
+import { FaIdBadge } from "react-icons/fa";
+import './styles/card.css';
 
 interface CardProps {
   garageName: string;
   permitType: string;
   distanceFromBuilding: string;
+  buildingName: string;
   travelTime: string;
   distanceInMiles: string;
   directionsLink?: string;
 }
 
 export class Card extends Component<CardProps> {
+  getTravelTimeColor(travelTime: string) {
+    const time = parseInt(travelTime);
+    if (time < 10) {
+      return 'green';
+    } else if (time >= 10 && time < 20) {
+      return 'orange';
+    } else {
+      return 'red';
+    }
+  }
+
+  getPermitTypeColor(permitType: string) {
+    switch (permitType) {
+      case "D PERMIT":
+        return "blue";
+      case "C PERMIT":
+        return "purple";
+      case "STAFF":
+        return "seaGreen";
+      case "A PERMIT":
+        return "red";
+      case "B PERMIT":
+        return "orange";
+      default:
+        return "gray";
+    }
+  }
+
   render() {
     const {
       garageName,
       permitType,
       distanceFromBuilding,
+      buildingName,
       travelTime,
       distanceInMiles,
       directionsLink,
@@ -24,50 +57,37 @@ export class Card extends Component<CardProps> {
     console.log("Card props:", this.props); // Check the props
 
     return (
-      <Box
-        borderWidth="1px"
-        borderRadius="lg"
-        overflow="hidden"
-        p="6"
-        boxShadow="lg"
-        bg="white"
-        maxW="sm"
-      >
-        <Flex align="center" mb="4">
-          <Text fontSize="xl" fontWeight="bold" color="black">{garageName}</Text>
+      <Box className="card-container">
+        <Flex className="card-header">
+          <Text className="card-title">{garageName}</Text>
           <Spacer />
-          <Badge
-            colorScheme={
-              permitType.startsWith("D") ? "blue" : permitType.startsWith("C") ? "purple" : "gray"
-            }
-            px="2"
-            py="1"
-            borderRadius="md"
-          >
-            {permitType}
-          </Badge>
+          <Badge 
+            className="card-badge"
+            bg={this.getPermitTypeColor(permitType)} // Set background color
+            color="white" // Set text color to white for better contrast
+            
+          > 
+            {permitType} <FaIdBadge />
+          </Badge> 
         </Flex>
-        <Text fontSize="sm" color="gray.500" mb="2">
-          {distanceFromBuilding}
-        </Text>
-        <Flex align="center" mb="1">
+        <Text className="card-distance">{distanceFromBuilding + " FROM " + buildingName}</Text>
+        <Flex className="card-info">
           <Box>
-            <Text fontSize="lg" fontWeight="bold" color="green.400">
+            <Text
+              className="card-travel-time"
+              style={{ color: this.getTravelTimeColor(travelTime) }}
+            >
               {travelTime}
             </Text>
-            <Text fontSize="sm" color="gray.600">
-              {distanceInMiles}
-            </Text>
+            <Text className="card-distance-miles">{distanceInMiles + " MILES"}</Text>
           </Box>
           <Spacer />
-        </Flex>
-        <Flex justifyContent="flex-end">
           <Button
-            colorScheme="blue"
-            size="sm"
+            className="card-button"
             onClick={() => window.open(directionsLink, "_blank")}
+            mt="3"
           >
-            Directions
+            Directions <MdDirections />
           </Button>
         </Flex>
       </Box>

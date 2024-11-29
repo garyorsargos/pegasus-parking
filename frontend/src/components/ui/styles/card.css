@@ -1,0 +1,57 @@
+.card-container {
+    border-width: 1px;
+    border-radius: 8px;
+    overflow: hidden;
+    padding: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    max-width: 400px;
+  }
+  
+  .card-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  
+  .card-title {
+    font-size: 1.25rem; /* equivalent to xl */
+    font-weight: bold;
+    color: black;
+  }
+  
+  .card-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+  
+  .card-distance {
+    font-size: 0.875rem; /* equivalent to sm */
+    color: gray;
+    margin-bottom: 8px;
+  }
+  
+  .card-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 3px;
+  }
+  
+  .card-travel-time {
+    font-size: 1.125rem; /* equivalent to lg */
+    font-weight: bold;
+  }
+  
+  .card-distance-miles {
+    font-size: 0.875rem; /* equivalent to sm */
+    color: gray;
+  }
+  
+  .card-button {
+    background-color: rgb(66, 93, 249);
+    color: white;
+    font-size: 0.75rem; /* equivalent to sm */
+    padding: 4px 8px; /* Smaller padding */
+    height: 30px; /* Optional: Set a smaller height */
+    border-radius: 4px; /* Optional: Adjust border radius */
+  }
