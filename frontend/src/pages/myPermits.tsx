@@ -22,10 +22,12 @@ const UserPermits = () => {
         if (response.ok) {
           setPermits(data.permits);
         } else {
-          setError(data.error || "An error occurred while fetching permits.");
+          setError(
+            data.error || "An errr occurred when fetching the permits.",
+          );
         }
       } catch (err) {
-        setError("An error occurred while fetching permits.");
+        setError("An errr occurred when fetching permits.");
       } finally {
         setLoading(false);
       }
@@ -69,10 +71,10 @@ const UserPermits = () => {
               <Flex justifyContent="space-between" alignItems="center">
                 <Box>
                   <Text fontWeight="bold" color="black">
-                    {permit.permit}
+                    {permit.licence}
                   </Text>
                   <Badge bg="blue.600" color="white" mt={1}>
-                    {permit.licence}
+                    {permit.permit}
                   </Badge>
                   <Text fontSize="sm" color="gray.600" mt={2}>
                     Expires:{" "}
