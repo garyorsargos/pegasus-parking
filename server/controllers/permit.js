@@ -60,12 +60,6 @@ const getPermits = async (req, res) => {
   }
 };
 
-module.exports = {
-  setPermit,
-  deletePermit,
-  getPermits, // Add the new function to the exported module
-};
-
 const deletePermit = async (req, res) => {
   try {
     const { permitId } = req.body;
