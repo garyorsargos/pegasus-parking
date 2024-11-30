@@ -4,6 +4,8 @@ const Permits = require('../models/permit');
 const setPermit = async (req, res) => {
     try {
         const { permit, licence, expiration } = req.body;
+        console.log("Request Headers: ", req.headers);
+        console.log("Request Body: ", req.body);
         console.log("Request User: ", req.user);
         const userId = req.user.userId;
         if (!permit || !licence || !expiration) {
