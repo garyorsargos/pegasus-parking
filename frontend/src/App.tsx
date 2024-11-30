@@ -32,6 +32,7 @@ function Main() {
         <Route path="/user/parking" element={<ParkingFinder />} />
         <Route path="/user/settings" element={<UserSettings />} />
         <Route path="/user/permits" element={<MyPermits />} />
+        
       </Routes>
     </>
   );
