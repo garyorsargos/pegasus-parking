@@ -17,7 +17,7 @@ const AddPermit = () => {
 
   const handleSubmit = async () => {
     if (!vehicleName || !permitType || !expirationDate) {
-      alert("Please fill out all fields before submitting.");
+      alert("Please fill fields before submission!!!");
       return;
     }
 
@@ -29,22 +29,15 @@ const AddPermit = () => {
           licence: vehicleName,
           expiration: expirationDate,
         },
-        { withCredentials: true }, // Ensure cookies are sent with the request
+        { withCredentials: true }, // Use for auth of user
       );
 
       if (response.status === 200) {
-        alert("Permit added successfully!");
-        // Reset form fields after success
-        setVehicleName("");
-        setPermitType("");
-        setExpirationDate("");
+        window.location.href = "/user/permits";
       }
     } catch (error: any) {
-      console.error("Error adding permit:", error);
-      alert(
-        error.response?.data?.error ||
-          "An error occurred while adding the permit.",
-      );
+      console.error("Permit error:", error);
+      alert("An error occurred when trying to add permit.");
     }
   };
 
@@ -81,12 +74,10 @@ const AddPermit = () => {
           onChange={(e) => setVehicleName(e.target.value)}
         />
 
-        {/* Permit Type Title */}
         <Text fontSize="lg" color="gray.700" mb="2">
           Permit Type
         </Text>
 
-        {/* Permit Type Button Group */}
         <Group width="100%" direction="row">
           {["D", "Emp", "R", "RL", "KP"].map((type) => (
             <Button
@@ -106,7 +97,6 @@ const AddPermit = () => {
           ))}
         </Group>
 
-        {/* Expiration Date Picker */}
         <Input
           name="expirationDate"
           type="date"
@@ -117,7 +107,6 @@ const AddPermit = () => {
           onChange={(e) => setExpirationDate(e.target.value)}
         />
 
-        {/* Submit Button */}
         <Button
           bg="skyblue"
           color="white"
