@@ -10,9 +10,9 @@ export class Navbar extends Component {
         <Box h="8vh" display="flex" alignItems="center" justifyContent="space-between" bg="black">
           <Heading p="4" size="4xl">Pegasus Parking</Heading>
           <Box p="4" justifyContent="space-between" display="flex" minWidth="25vw" maxWidth="50vw">
-            <Button variant="ghost" size="lg" m="2"><Link to="/parking">Find Parking</Link></Button>
-            <Button variant="ghost" size="lg" m="2"><Link to="/permits">My Permits</Link></Button>
-            <Button variant="ghost" size="lg" m="2"><Link to="/settings">Account Details</Link></Button>
+            <Button variant="ghost" size="lg" m="2"><Link to="/user/parking">Find Parking</Link></Button>
+            <Button variant="ghost" size="lg" m="2"><Link to="/user/permits">My Permits</Link></Button>
+            <Button variant="ghost" size="lg" m="2"><Link to="/user/settings">Account Details</Link></Button>
             <Button variant="solid" size="lg" bg="#db5555" m="2"><IoLogOut /></Button>
           </Box>
         </Box>
