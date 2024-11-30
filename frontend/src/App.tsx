@@ -6,6 +6,7 @@ import UserSettings from './pages/userSettings';
 import MyPermits from './pages/myPermits';
 import ParkingFinder from './pages/parkingFinder';
 import { Navbar } from './components/ui/navbar';
+import AddPermit from "./pages/addPermit";
 import './App.css';
 
 function App() {
@@ -26,13 +27,13 @@ function Main() {
     <>
       {showNavbar && <Navbar />}
       <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/user/parking" element={<ParkingFinder />} />
         <Route path="/user/settings" element={<UserSettings />} />
         <Route path="/user/permits" element={<MyPermits />} />
         
+        <Route path="/user/addPermit" element={<AddPermit />} />
       </Routes>
     </>
   );
