@@ -27,8 +27,7 @@ function Main() {
     <>
       {showNavbar && <Navbar />}
       <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/user/parking" element={<ParkingFinder />} />
         <Route path="/user/settings" element={<UserSettings />} />
