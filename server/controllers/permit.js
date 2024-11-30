@@ -42,13 +42,10 @@ const setPermit = async (req, res) => {
 const getPermits = async (req, res) => {
   try {
     const userId = req.user.userId;
-
     const user = await Users.findOne({ userId: userId }).populate("permits");
-
     if (!user) {
-      return res.status(401).json({ error: "User not found or unauthorized." });
+      return res.status(401).json({ error: "User not found" });
     }
-
     return res.status(200).json({
       permits: user.permits,
     });
@@ -56,7 +53,7 @@ const getPermits = async (req, res) => {
     console.error(error);
     return res
       .status(500)
-      .json({ error: "An error occurred while fetching permits." });
+      .json({ error: "An errr occurred while fetching permits" });
   }
 };
 
