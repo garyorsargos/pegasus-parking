@@ -9,21 +9,21 @@ const Login = () => {
   const navigate = useNavigate(); // Hook for programmatic navigation
 
   const handleLogin = async () => {
-    try {
-      // Add username and password as query parameters to the URL
-      const response = await axios.post(
-        `https://parking.garyorsargos.xyz/api/login?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`,
-      );
+  try {
+    const response = await axios.post(
+      "https://parking.garyorsargos.xyz/api/login",
+      { username, password }, // Use POST body for credentials
+      { withCredentials: true } // Include cookies
+    );
 
-      if (response.status === 200) {
-        // If the HTTP status is 200, navigate to /user/parking
-        navigate("/user/parking");
-      }
-      console.log(response.data); // Log the response data from the API
-    } catch (error) {
-      console.error("Error logging in:", error);
+    if (response.status === 200) {
+      navigate("/user/parking");
     }
-  };
+    console.log("Login successful:", response.data);
+  } catch (error) {
+    console.error("Error logging in:", error);
+  }
+};
 
   return (
     <Box

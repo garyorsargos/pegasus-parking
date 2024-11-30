@@ -7,6 +7,7 @@ const login = (req, res, cb) => {
       if (!user) return res.status(401).json({ error: info.message });
 
       req.logIn(user, (err) => {
+         console.log("Session after login:", req.session);
          if (err) return cb(err);
 
          res.json({
