@@ -1,54 +1,64 @@
-import { Box, Flex, Badge, Text, Heading, Button } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { Box, Flex, Badge, Text, Button, Heading } from "@chakra-ui/react";
 
-// Define the PermitType type with the specific string values
-type PermitType = "D PERMIT" | "A PERMIT" | "STAFF";
-
-// Define the structure of each permit
 interface Permit {
-  name: string;
-  type: PermitType;  // Explicitly use PermitType for 'type'
-  color: string;
+  _id: string;
+  permit: string;
+  licence: string;
+  expiration: string;
 }
 
-const MyPermits = () => {
-  // Define permits with the explicit PermitType type for 'type'
-  const permits: Permit[] = [
-    { name: "2012 KIA FORTE", type: "D PERMIT", color: "blue" },
-    { name: "2020 KAWASAKI NINJA 400", type: "A PERMIT", color: "red" },
-    { name: "2015 RAM 1500", type: "D PERMIT", color: "green" },
-    { name: "1998 KIA SOUL", type: "STAFF", color: "blue" },
-  ];
+const UserPermits = () => {
+  const [permits, setPermits] = useState<Permit[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Function to map the permit type to a Badge background color
-  const getBadgeColor = (type: PermitType) => {
-    switch (type) {
-      case "D PERMIT":
-        return "green.600";  // D PERMIT -> green.600
-      case "A PERMIT":
-        return "red.600";  // A PERMIT -> red.600
-      case "STAFF":
-        return "blue.600";  // STAFF -> blue.600
-      default:
-        return "gray.600"; // Default color if needed
-    }
-  };
+  useEffect(() => {
+    const fetchPermits = async () => {
+      try {
+        const response = await fetch("/api/permits");
+        const data = await response.json();
+
+        if (response.ok) {
+          setPermits(data.permits);
+        } else {
+          setError(data.error || "An error occurred while fetching permits.");
+        }
+      } catch (err) {
+        setError("An error occurred while fetching permits.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPermits();
+  }, []);
+
+  if (loading) {
+    return <Text>Loading permits...</Text>;
+  }
+
+  if (error) {
+    return <Text color="red.500">{error}</Text>;
+  }
 
   return (
     <Box bg="gray.100" p={5} minH="100vh">
-      {/* Main Content */}
       <Box bg="white" borderRadius="md" p={6} mt={5} boxShadow="md">
         <Flex justifyContent="space-between" alignItems="center" mb={4}>
-          <Heading size="lg" color="black">My Permits</Heading> {/* Black color for the heading */}
-          <Button bg="green.500" _hover={{ bg: "green.600" }} color="white"> {/* Green color for Add a Permit */}
+          <Heading size="lg" color="black">
+            My Permits
+          </Heading>
+          <Button bg="green.500" _hover={{ bg: "green.600" }} color="white">
             Add a Permit
           </Button>
         </Flex>
 
-        {/* Permit List */}
+        {/* Render the user's permits */}
         <Flex direction="column" gap={4}>
-          {permits.map((permit, index) => (
+          {permits.map((permit) => (
             <Box
-              key={index}
+              key={permit._id}
               bg="gray.50"
               p={4}
               borderRadius="md"
@@ -58,20 +68,28 @@ const MyPermits = () => {
             >
               <Flex justifyContent="space-between" alignItems="center">
                 <Box>
-                  <Text fontWeight="bold" color="black">{permit.name}</Text> {/* Black color for car model */}
-                  <Badge bg={getBadgeColor(permit.type)} color="white" mt={1}> {/* Using bg instead of colorScheme */}
-                    {permit.type}
+                  <Text fontWeight="bold" color="black">
+                    {permit.permit}
+                  </Text>
+                  <Badge bg="blue.600" color="white" mt={1}>
+                    {permit.licence}
                   </Badge>
                   <Text fontSize="sm" color="gray.600" mt={2}>
-                    Expires: <Text as="span" color="green.500">3 Months</Text>
+                    Expires:{" "}
+                    <Text as="span" color="green.500">
+                      {permit.expiration}
+                    </Text>
                   </Text>
-                  <Text fontSize="xs" color="gray.500">November 10th, 2025</Text>
                 </Box>
                 <Flex gap={3}>
-                  <Button size="sm" bg="yellow.400" _hover={{ bg: "yellow.500" }}> {/* Yellow color for Set as Default */}
+                  <Button
+                    size="sm"
+                    bg="yellow.400"
+                    _hover={{ bg: "yellow.500" }}
+                  >
                     Set as Default
                   </Button>
-                  <Button size="sm" bg="red.400" _hover={{ bg: "red.500" }}> {/* Red color for Delete */}
+                  <Button size="sm" bg="red.400" _hover={{ bg: "red.500" }}>
                     Delete
                   </Button>
                 </Flex>
@@ -84,4 +102,4 @@ const MyPermits = () => {
   );
 };
 
-export default MyPermits;
+export default UserPermits;
