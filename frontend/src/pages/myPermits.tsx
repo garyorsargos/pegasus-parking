@@ -16,7 +16,7 @@ const UserPermits = () => {
   useEffect(() => {
     const fetchPermits = async () => {
       try {
-        const response = await fetch("/api/permits");
+        const response = await fetch("/api/getPermits");
         const data = await response.json();
 
         if (response.ok) {
