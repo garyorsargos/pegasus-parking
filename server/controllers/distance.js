@@ -58,7 +58,7 @@ const fetchDistance = async (req, res) => {
                 garage: garages[i].name,
                 permits: garages[i].permit,
                 distance: distance,
-                time: `${min}:${sec}`,
+                time: `${min}`,
                 polyline: encodedPolyline
             })
 

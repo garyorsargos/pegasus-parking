@@ -7,8 +7,6 @@ import './styles/card.css';
 interface CardProps {
   garageName: string;
   permitType: string;
-  distanceFromBuilding: string;
-  buildingName: string;
   travelTime: string;
   distanceInMiles: string;
   directionsLink?: string;
@@ -17,9 +15,9 @@ interface CardProps {
 export class Card extends Component<CardProps> {
   getTravelTimeColor(travelTime: string) {
     const time = parseInt(travelTime);
-    if (time < 10) {
+    if (time < 6) {
       return 'green';
-    } else if (time >= 10 && time < 20) {
+    } else if (time >= 6 && time < 10) {
       return 'orange';
     } else {
       return 'red';
@@ -30,13 +28,13 @@ export class Card extends Component<CardProps> {
     switch (permitType) {
       case "D PERMIT":
         return "blue";
-      case "C PERMIT":
+      case "KP PERMIT":
         return "purple";
-      case "STAFF":
+      case "Emp PERMIT":
         return "seaGreen";
-      case "A PERMIT":
+      case "R PERMIT":
         return "red";
-      case "B PERMIT":
+      case "RL PERMIT":
         return "orange";
       default:
         return "gray";
@@ -47,8 +45,6 @@ export class Card extends Component<CardProps> {
     const {
       garageName,
       permitType,
-      distanceFromBuilding,
-      buildingName,
       travelTime,
       distanceInMiles,
       directionsLink,
@@ -70,7 +66,6 @@ export class Card extends Component<CardProps> {
             {permitType} <FaIdBadge />
           </Badge> 
         </Flex>
-        <Text className="card-distance">{distanceFromBuilding + " FROM " + buildingName}</Text>
         <Flex className="card-info">
           <Box>
             <Text
