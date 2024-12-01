@@ -3,26 +3,21 @@ const Garages = require('../models/garage');
 
 //if you want to test the postman your self use this json:
 //{
-//    "permit" : "A",
-//    "destinationName" : "Health Sciences 1"
+//    "permitList" : ["Emp", "Br", "C"],
+//    "destinationLat" : 28.603017780901947,
+//    "destinationLng" : -81.19856071680208
 //}
 const fetchDistance = async (req, res) => {
-    // body is a permit and a destination 
-    const { permit, destinationName } = req.body;
+    // body is a list of permits and a lat/lng 
+    const { permitList, destinationLat, destinationLng } = req.body;
     const url = "https://routes.googleapis.com/directions/v2:computeRoutes";
 
-    // find garages with permit
+    // find garages with permits in permitList
+    const garages = await Garages.find({ permit: { $in: permitList } });;
 
-    const garages = await Garages.find({ permit: permit });
-
-    //I am not sure if we will be using this collection in the future so I didn't make a schema for it 
-    const destinationsCollection = mongoose.model("TestLocations", new mongoose.Schema({}, { strict: false }), "TestLocations");
-    const destination = await destinationsCollection.findOne({ name: destinationName });
-
-    if (!destination) {
-        return res.status(404).json({ error: "Destination not found" });
+    if (!destinationLat || !destinationLng) {
+        return res.status(404).json({ error: "Enter a Latitude and Longitude." });
     }
-    const { lat: lat2, lng: lng2 } = destination;
     const result = [];
 
     for (let i = 0; i < garages.length; i++) {
@@ -31,7 +26,7 @@ const fetchDistance = async (req, res) => {
 
         const body = {
             origin: { location: { latLng: { latitude: lat1, longitude: lng1 } } },
-            destination: { location: { latLng: { latitude: lat2, longitude: lng2 } } },
+            destination: { location: { latLng: { latitude: destinationLat, longitude: destinationLng } } },
             travelMode: "WALK",
             computeAlternativeRoutes: false,
             units: "IMPERIAL"
