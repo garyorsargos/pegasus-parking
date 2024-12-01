@@ -73,7 +73,7 @@ const ParkingFinder: React.FC = () => {
           <Card
             key={index}
             garageName={garage.garage}
-            permitType={findMatchingPermit(garage.permits, userPermits)}
+            permitType={`${findMatchingPermit(garage.permits, userPermits)} PERMIT`}
             travelTime={`${garage.time} minutes`}
             distanceInMiles={garage.distance.toFixed(2)}
             directionsLink="https://www.google.com/maps"
