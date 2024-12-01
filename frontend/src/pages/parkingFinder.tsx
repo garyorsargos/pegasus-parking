@@ -1,57 +1,94 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { GoogleMap } from '@react-google-maps/api';
+import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import Card from '../components/ui/card';
 import '../components/ui/styles/parkingFinder.css';
 
+type GarageData = {
+  garage: string;
+  permits: string[];
+  distance: number;
+  time: string;
+  polyline?: string;
+};
+
 const ParkingFinder: React.FC = () => {
   const location = useLocation();
-  const [mapKey, setMapKey] = useState<number>(0);
+  const [mapKey, setMapKey] = useState(0);
+  const [garageData, setGarageData] = useState<GarageData[]>([]);
+  const [userPermits, setUserPermits] = useState<string[]>([]);
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: 'AIzaSyCSxW_PMdBUPdNmdJYsp070JP0CRHrlJrA',
+  });
 
-  const parkingData = [
-    { name: 'GARAGE B', permit: 'D PERMIT', distance: '0.1', buildingName: 'CLASSROOM BUILDING 2', time: '8 min', miles: '3.2' },
-    { name: 'GARAGE F', permit: 'C PERMIT', distance: '80 METERS', buildingName: 'CLASSROOM BUILDING 2', time: '13 min', miles: '3.8' },
-    { name: 'LOT G', permit: 'STAFF', distance: '1.3', buildingName: 'CLASSROOM BUILDING 2', time: '15 min', miles: '4.1' },
-    { name: 'LIBRA GARAGE', permit: 'A PERMIT', distance: '1.6', buildingName: 'CLASSROOM BUILDING 2', time: '20 min', miles: '4.0' },
-  ];
+  const containerStyle = { width: '95%', height: '95%' };
+  const center = { lat: 28.6024, lng: -81.2001 };
 
-  const containerStyle = {
-    width: '95%',
-    height: '95%',
+  const handleMapClick = async (event: google.maps.MapMouseEvent) => {
+    const clickedLat = event.latLng?.lat();
+    const clickedLng = event.latLng?.lng();
+
+    if (clickedLat && clickedLng) {
+      try {
+        const permitsResponse = await fetch('/api/getPermitStrings', { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+        if (permitsResponse.ok) {
+          const permitsData = await permitsResponse.json();
+          const permitList = permitsData.permits;
+          setUserPermits(permitList);
+
+          const fetchDistanceResponse = await fetch('/api/fetchDistance', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ permit: permitList, destinationLat: clickedLat, destinationLng: clickedLng }),
+          });
+
+          if (fetchDistanceResponse.ok) {
+            const distanceData = await fetchDistanceResponse.json();
+            setGarageData(distanceData);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
   };
 
-  const center = {
-    lat: 28.6024,
-    lng: -81.2001, //THe main UCF coordinates
+  const findMatchingPermit = (garagePermits: string[], userPermits: string[]) => {
+    for (const permit of garagePermits) {
+      if (userPermits.includes(permit)) {
+        return permit;
+      }
+    }
+    return 'No Matching Permit';
   };
 
-  useEffect(() => {
-    setMapKey(prevKey => prevKey + 1); 
-  }, [location]);
+  useEffect(() => setMapKey((prev) => prev + 1), [location]);
+
+  if (!isLoaded) return <div>Loading Map...</div>;
 
   return (
     <div className="parking-finder-container">
       <div className="sidebar">
-        {parkingData.map((garage, index) => (
+        {garageData.map((garage, index) => (
           <Card
             key={index}
-            garageName={garage.name}
-            permitType={garage.permit}
-            distanceFromBuilding={garage.distance}
-            buildingName={garage.buildingName}
+            garageName={garage.garage}
+            permitType={findMatchingPermit(garage.permits, userPermits)}
+            distanceFromBuilding={`${garage.distance.toFixed(2)} miles`}
+            buildingName="Selected Location"
             travelTime={garage.time}
-            distanceInMiles={garage.miles}
+            distanceInMiles={garage.distance.toFixed(2)}
             directionsLink="https://www.google.com/maps"
           />
         ))}
       </div>
-
       <div className="main-content">
         <GoogleMap
           key={mapKey}
           mapContainerStyle={containerStyle}
           center={center}
           zoom={16}
+          onClick={handleMapClick}
         />
       </div>
     </div>

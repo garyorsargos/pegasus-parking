@@ -57,6 +57,25 @@ const getPermits = async (req, res) => {
   }
 };
 
+const getPermitStrings = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const user = await Users.findOne({ userId: userId }).populate("permits");
+    if (!user) {
+      return res.status(401).json({ error: "User not found" });
+    }
+    const permitStrs = user.permits.map((permit) => permit.permit);
+    return res.status(200).json({
+      permits: permitStrs,
+    });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "An error occurred while fetching permits" });
+  }
+};
+
 const deletePermit = async (req, res) => {
   try {
     const { permitId } = req.body;
@@ -96,4 +115,5 @@ module.exports = {
   setPermit,
   deletePermit,
   getPermits,
+  getPermitStrings,
 };
