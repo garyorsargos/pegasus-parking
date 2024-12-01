@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { Box, Image, Heading, Text, Button, Flex, Stack } from '@chakra-ui/react';
 import axios from 'axios';
-import './styles/userSettings.css';
+import '../components/ui/styles/userSettings.css';
 
 class UserSettings extends Component {
   state = {
