@@ -39,7 +39,7 @@ const ParkingFinder: React.FC = () => {
           const fetchDistanceResponse = await fetch('/api/fetchDistance', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ permit: permitList, destinationLat: clickedLat, destinationLng: clickedLng }),
+            body: JSON.stringify({ permitList: permitList, destinationLat: clickedLat, destinationLng: clickedLng }),
           });
 
           if (fetchDistanceResponse.ok) {
@@ -74,9 +74,7 @@ const ParkingFinder: React.FC = () => {
             key={index}
             garageName={garage.garage}
             permitType={findMatchingPermit(garage.permits, userPermits)}
-            distanceFromBuilding={`${garage.distance.toFixed(2)} miles`}
-            buildingName="Selected Location"
-            travelTime={garage.time}
+            travelTime={`${garage.time} minutes`}
             distanceInMiles={garage.distance.toFixed(2)}
             directionsLink="https://www.google.com/maps"
           />
