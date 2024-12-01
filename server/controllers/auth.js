@@ -74,9 +74,34 @@ const logout = async (req, res) => {
       return res.status(500).json({ error: "An error occurred while Logging Out." });;
    }
 };
+const getUserInfo = (req, res) => {
+    if (!req.user) {
+        return res.status(401).json({ error: 'User is not authenticated' });
+    }
+
+    Users.findOne({ userId: req.user.userId })
+        .then(user => {
+            if (!user) {
+                return res.status(404).json({ error: 'User not found' });
+            }
+
+            const { userName, firstName, lastName } = user;
+            res.json({
+                username: userName,
+                firstName,
+                lastName
+            });
+        })
+        .catch(err => {
+            console.error('Error fetching user info:', err);
+            res.status(500).json({ error: 'Internal server error' });
+        });
+};
+
 
 module.exports = {
    login,
    register,
    logout,
+   getUserInfo,
 }
