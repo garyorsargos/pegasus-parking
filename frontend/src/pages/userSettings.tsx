@@ -11,7 +11,7 @@ class UserSettings extends Component {
   };
 
   componentDidMount() {
-    axios.get('/api/user-info')
+    axios.get('/api/getUserInfo')
       .then(response => {
         const { username, firstName, lastName } = response.data;
         this.setState({ username, firstName, lastName });

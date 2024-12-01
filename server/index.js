@@ -3,7 +3,7 @@ const passport = require('passport');
 const session = require('express-session');
 const connectToDatabase = require('./config/mongodb');
 const passportConfig = require('./config/passport');
-const { login, register, logout } = require("./controllers/auth");
+const { login, register, logout, getUserInfo } = require("./controllers/auth");
 const { setPermit, deletePermit, getPermits, getPermitStrings } = require('./controllers/permit');
 const fetchDistance = require('./controllers/distance');
 const checkPermits = require('./controllers/checkPermit');
@@ -36,6 +36,7 @@ passportConfig(passport);
 app.use('/login', login);
 app.use('/register', register);
 app.use('/logout', logout);
+app.use('/getUserInfo', getUserInfo);
 
 //Google map distance calculation
 app.use('/fetchDistance', fetchDistance);
