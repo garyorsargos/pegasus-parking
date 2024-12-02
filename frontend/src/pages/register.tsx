@@ -19,7 +19,7 @@ const Register = () => {
       );
 
       if (response.status === 200) {
-        navigate("/login");
+        navigate("/");
       }
     } catch (error) {
       console.error("Error registering:", error);
