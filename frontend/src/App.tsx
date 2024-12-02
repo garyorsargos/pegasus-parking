@@ -5,7 +5,7 @@ import Register from './pages/register';
 import UserSettings from './pages/userSettings';
 import MyPermits from './pages/myPermits';
 import ParkingFinder from './pages/parkingFinder';
-import { Navbar } from './components/ui/navbar';
+import Navbar from './components/ui/navbar';
 import AddPermit from "./pages/addPermit";
 import './App.css';
 
