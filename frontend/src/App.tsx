@@ -9,6 +9,7 @@ import Navbar from './components/ui/navbar';
 import AddPermit from "./pages/addPermit";
 import ProtectedRoute from "./components/ProtectedRoute";
 import './App.css';
+import EditPermit from "./pages/editPermit";
 
 const GOOGLE_MAPS_API_KEY = "AIzaSyCSxW_PMdBUPdNmdJYsp070JP0CRHrlJrA";
 
@@ -39,6 +40,7 @@ function Main() {
           <Route path="/user/settings" element={<UserSettings />} />
           <Route path="/user/permits" element={<MyPermits />} />
           <Route path="/user/addPermit" element={<AddPermit />} />
+          <Route path="/user/editPermit" element={<EditPermit />} />
         </Route>
       </Routes>
     </>
