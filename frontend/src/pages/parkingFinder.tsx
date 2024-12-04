@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
+import { Text } from '@chakra-ui/react';
 import Card from '../components/ui/card';
 import '../components/ui/styles/parkingFinder.css';
 
@@ -52,7 +53,6 @@ const ParkingFinder: React.FC = () => {
             const distanceData: GarageData[] = await fetchDistanceResponse.json();
             setGarageData(distanceData);
 
-            // If no garages were added, display the message
             if (distanceData.length === 0) {
               setNoPermitsMessage(true);
             } else {
@@ -97,11 +97,17 @@ const ParkingFinder: React.FC = () => {
             />
           ))
         ) : (
-          noPermitsMessage ? (
-            <p>Please add a Permit First</p>
-          ) : (
-            <p>Please Select your Destination</p>
-          )
+          <div>
+            {noPermitsMessage ? (
+              <Text color="black" fontWeight="medium">
+                Please add a Permit First
+              </Text>
+            ) : (
+              <Text color="black" fontWeight="medium">
+                Please Select your Destination
+              </Text>
+            )}
+          </div>
         )}
       </div>
       <div className="main-content">
