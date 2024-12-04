@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Box, Text } from '@chakra-ui/react';
 import { useMessage } from '../../context/messageContext';
 import { MessageTypes } from '../../utils/messageTypes';
@@ -8,18 +8,8 @@ interface MessageProps {
 }
 
 const Message: React.FC<MessageProps> = ({ id }) => {
-  const { messages, hideMessage } = useMessage();
+  const { messages } = useMessage();
   const message = messages.find((msg) => msg.id === id);
-
-  useEffect(() => {
-    // Hide the message when the component is mounted
-    hideMessage(id);
-
-    // Optionally, hide the message when the component is unmounted
-    return () => {
-      hideMessage(id);
-    };
-  }, [id, hideMessage]);
 
   if (!message || !message.visible) return null;
 
@@ -38,15 +28,33 @@ const Message: React.FC<MessageProps> = ({ id }) => {
     }
   };
 
+  const getBackgroundColor = (type: MessageTypes) => {
+    switch (type) {
+      case MessageTypes.SUCCESS:
+        return 'green.100';
+      case MessageTypes.ERROR:
+        return 'red.100';
+      case MessageTypes.WARNING:
+        return 'yellow.100';
+      case MessageTypes.INFO:
+        return 'gray.100';
+      default:
+        return 'blue.100';
+    }
+  };
+
   return (
     <Box
-      border={`2px solid ${getColor(message.type)}`}
-      p={4}
+      borderWidth="2px"
+      borderStyle="solid"
+      borderColor={getColor(message.type)}
+      backgroundColor={getBackgroundColor(message.type)}
+      p={2}
       borderRadius="md"
       color={getColor(message.type)}
-      maxWidth="400px"
+      maxWidth="300px"
       width="fit-content"
-      margin="10px auto"
+      margin="5px auto"
     >
       <Text>{message.text}</Text>
     </Box>

@@ -62,7 +62,6 @@ const Login = () => {
         Login
       </Text>
       <Stack width="100%" maxWidth="sm">
-        <Message id="loginMessage" />
         <Input
           name="username"
           placeholder="Username"
@@ -91,6 +90,7 @@ const Login = () => {
         >
           Login
         </Button>
+        <Message id="loginMessage" />
       </Stack>
       <Text mt={4}>
         <Link
