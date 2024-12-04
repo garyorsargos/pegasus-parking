@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Box, Flex, Badge, Text, Button, Heading } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import { useMessage } from "../context/MessageContext";
+import { MessageTypes } from "../utils/messageTypes";
 
 interface Permit {
   _id: string;
@@ -13,6 +15,7 @@ const UserPermits = () => {
   const [permits, setPermits] = useState<Permit[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { setMessage, showMessage } = useMessage();
 
   useEffect(() => {
     const fetchPermits = async () => {
@@ -20,20 +23,24 @@ const UserPermits = () => {
         const response = await fetch("/api/getPermits");
         const data = await response.json();
 
-        if (response.ok) {
-          setPermits(data.permits);
+        if (response.ok && data.success) {
+          setPermits(data.data);
         } else {
-          setError(data.error || "Error occurred while fetching permits.");
+          setError(data.message?.message || "Error occurred while fetching permits.");
+          setMessage("fetchPermitsMessage", MessageTypes.ERROR, data.message?.message || "Error occurred while fetching permits.");
+          showMessage("fetchPermitsMessage");
         }
       } catch (err) {
         setError("Unable to fetch permits. Please try again.");
+        setMessage("fetchPermitsMessage", MessageTypes.ERROR, "Unable to fetch permits. Please try again.");
+        showMessage("fetchPermitsMessage");
       } finally {
         setLoading(false);
       }
     };
 
     fetchPermits();
-  }, []);
+  }, [setMessage, showMessage]);
 
   const handleDeletePermit = async (permitId: string) => {
     try {
@@ -47,13 +54,19 @@ const UserPermits = () => {
 
       const data = await response.json();
 
-      if (response.ok) {
+      if (response.ok && data.success) {
         setPermits(permits.filter((permit) => permit._id !== permitId));
+        setMessage("deletePermitMessage", MessageTypes.SUCCESS, "Permit deleted successfully.");
+        showMessage("deletePermitMessage");
       } else {
-        setError(data.error || "Failed to delete the permit. Please try again.");
+        setError(data.message?.message || "Failed to delete the permit. Please try again.");
+        setMessage("deletePermitMessage", MessageTypes.ERROR, data.message?.message || "Failed to delete the permit. Please try again.");
+        showMessage("deletePermitMessage");
       }
     } catch (err) {
       setError("There was an issue deleting the permit.");
+      setMessage("deletePermitMessage", MessageTypes.ERROR, "There was an issue deleting the permit.");
+      showMessage("deletePermitMessage");
     }
   };
 
@@ -139,4 +152,3 @@ const UserPermits = () => {
 };
 
 export default UserPermits;
-

@@ -4,12 +4,13 @@ import {
   Input,
   Button,
   Stack,
-  Group,
   Text,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { useMessage } from "../context/MessageContext";
+import { MessageTypes } from "../utils/messageTypes";
 
 const EditPermit = () => {
   const [vehicleName, setVehicleName] = useState<string>("");
@@ -18,6 +19,7 @@ const EditPermit = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const { permitId } = useParams<{ permitId: string }>();
   const navigate = useNavigate();
+  const { setMessage, showMessage } = useMessage();
 
   useEffect(() => {
     const fetchPermitDetails = async () => {
@@ -26,8 +28,8 @@ const EditPermit = () => {
           withCredentials: true,
         });
 
-        if (response.status === 200) {
-          const permits = response.data.permits;
+        if (response.status === 200 && response.data.success) {
+          const permits = response.data.data;
           const selectedPermit = permits.find((permit: any) => permit._id === permitId);
 
           if (selectedPermit) {
@@ -38,6 +40,9 @@ const EditPermit = () => {
             alert("Permit not found.");
             navigate("/user/permits");
           }
+        } else {
+          alert(response.data.message?.message || "Failed to load permits.");
+          navigate("/user/permits");
         }
       } catch (error) {
         console.error("Error fetching permits:", error);
@@ -69,12 +74,21 @@ const EditPermit = () => {
         { withCredentials: true }
       );
 
-      if (response.status === 200) {
+      if (response.data.success) {
+        if (response.data.message) {
+          setMessage("editPermitMessage", response.data.message.type, response.data.message.message);
+          showMessage("editPermitMessage");
+        }
         navigate("/user/permits");
+      } else {
+        if (response.data.message) {
+          setMessage("editPermitMessage", response.data.message.type, response.data.message.message);
+          showMessage("editPermitMessage");
+        }
       }
     } catch (error) {
-      console.error("Error updating permit:", error);
-      alert("Failed to update permit.");
+      setMessage("editPermitMessage", MessageTypes.ERROR, "Failed to update permit.");
+      showMessage("editPermitMessage");
     }
   };
 
@@ -118,7 +132,7 @@ const EditPermit = () => {
           Permit Type
         </Text>
 
-        <Group width="100%" direction="row">
+        <Box width="100%" display="flex" justifyContent="space-between">
           {["D", "Emp", "R", "RL", "KP"].map((type) => (
             <Button
               key={type}
@@ -135,7 +149,7 @@ const EditPermit = () => {
               {type}
             </Button>
           ))}
-        </Group>
+        </Box>
 
         <Input
           name="expirationDate"
@@ -162,4 +176,3 @@ const EditPermit = () => {
 };
 
 export default EditPermit;
-

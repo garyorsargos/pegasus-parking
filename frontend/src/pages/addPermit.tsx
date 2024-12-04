@@ -4,16 +4,18 @@ import {
   Input,
   Button,
   Stack,
-  Group,
   Text,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import axios from "axios";
+import { useMessage } from "../context/MessageContext";
+import { MessageTypes } from "../utils/messageTypes";
 
 const AddPermit = () => {
   const [vehicleName, setVehicleName] = useState<string>("");
   const [permitType, setPermitType] = useState<string>("");
   const [expirationDate, setExpirationDate] = useState<string>("");
+  const { setMessage, showMessage } = useMessage();
 
   const handleSubmit = async () => {
     if (!vehicleName || !permitType || !expirationDate) {
@@ -23,21 +25,30 @@ const AddPermit = () => {
 
     try {
       const response = await axios.post(
-        "https://parking.garyorsargos.xyz/api/setPermit",
+        "/api/setPermit",
         {
           permit: permitType,
           licence: vehicleName,
           expiration: expirationDate,
         },
-        { withCredentials: true }, // Use for auth of user
+        { withCredentials: true }
       );
 
-      if (response.status === 200) {
+      if (response.data.success) {
+        if (response.data.message) {
+          setMessage("addPermitMessage", response.data.message.type, response.data.message.message);
+          showMessage("addPermitMessage");
+        }
         window.location.href = "/user/permits";
+      } else {
+        if (response.data.message) {
+          setMessage("addPermitMessage", response.data.message.type, response.data.message.message);
+          showMessage("addPermitMessage");
+        }
       }
     } catch (error: any) {
-      console.error("Permit error:", error);
-      alert("An error occurred when trying to add permit.");
+      setMessage("addPermitMessage", MessageTypes.ERROR, "An error occurred when trying to add permit.");
+      showMessage("addPermitMessage");
     }
   };
 
@@ -63,7 +74,6 @@ const AddPermit = () => {
         Add Permit
       </Heading>
       <Stack width="100%" maxWidth="sm">
-        {/* Vehicle Name Input */}
         <Input
           name="vehicleName"
           placeholder="Vehicle Name"
@@ -78,7 +88,7 @@ const AddPermit = () => {
           Permit Type
         </Text>
 
-        <Group width="100%" direction="row">
+        <Box width="100%" display="flex" justifyContent="space-between">
           {["D", "Emp", "R", "RL", "KP"].map((type) => (
             <Button
               key={type}
@@ -95,7 +105,7 @@ const AddPermit = () => {
               {type}
             </Button>
           ))}
-        </Group>
+        </Box>
 
         <Input
           name="expirationDate"

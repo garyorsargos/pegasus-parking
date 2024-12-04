@@ -2,19 +2,27 @@ import axios from "axios";
 import { Button, Box, Heading } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import { IoLogOut } from "react-icons/io5";
+import { useMessage } from "../context/MessageContext";
+import { MessageTypes } from "../utils/messageTypes";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const { setMessage, showMessage } = useMessage();
 
   const handleLogout = async () => {
     try {
       const response = await axios.post("/api/logout");
-      if (response.status === 200) {
+      if (response.data.success) {
+        setMessage("logoutMessage", response.data.message?.type || MessageTypes.SUCCESS, response.data.message?.message || "Logged out successfully.");
+        showMessage("logoutMessage");
         navigate("/");
+      } else {
+        setMessage("logoutMessage", response.data.message?.type || MessageTypes.ERROR, response.data.message?.message || "Failed to log out.");
+        showMessage("logoutMessage");
       }
     } catch (error) {
-      console.error(error);
-      alert("Failed to log out. Please try again.");
+      setMessage("logoutMessage", MessageTypes.ERROR, "Failed to log out. Please try again.");
+      showMessage("logoutMessage");
     }
   };
 
@@ -48,4 +56,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-

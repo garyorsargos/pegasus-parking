@@ -1,6 +1,8 @@
 import { Component } from 'react';
 import { Box, Image, Heading, Text, Button, Flex, Stack } from '@chakra-ui/react';
 import axios from 'axios';
+import { useMessage } from '../context/MessageContext';
+import { MessageTypes } from '../utils/messageTypes';
 import '../components/ui/styles/userSettings.css';
 
 class UserSettings extends Component {
@@ -13,7 +15,7 @@ class UserSettings extends Component {
   componentDidMount() {
     axios.get('/api/getUserInfo')
       .then((response) => {
-        const { username, firstName, lastName } = response.data;
+        const { username, firstName, lastName } = response.data.data;
         this.setState({ username, firstName, lastName });
       })
       .catch((error) => {
@@ -23,8 +25,12 @@ class UserSettings extends Component {
 
   handleLogout = async () => {
     try {
-      await axios.post('/api/logout');
-      window.location.href = '/';
+      const response = await axios.post('/api/logout');
+      if (response.data.success) {
+        window.location.href = '/';
+      } else {
+        alert(response.data.message?.message || 'Failed to log out. Please try again.');
+      }
     } catch (error) {
       console.error('Error logging out:', error);
       alert('Failed to log out. Please try again.');
@@ -35,8 +41,12 @@ class UserSettings extends Component {
     const confirmed = window.confirm('Are you sure you want to delete your account? This is PERMANENT!');
     if (confirmed) {
       try {
-        await axios.delete('/api/deleteAccount');
-        window.location.href = '/';
+        const response = await axios.delete('/api/deleteAccount');
+        if (response.data.success) {
+          window.location.href = '/';
+        } else {
+          alert(response.data.message?.message || 'Failed to delete account. Please try again.');
+        }
       } catch (error) {
         console.error('Error deleting account:', error);
         alert('Failed to delete account. Please try again.');
@@ -85,4 +95,3 @@ class UserSettings extends Component {
 }
 
 export default UserSettings;
-
