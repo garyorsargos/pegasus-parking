@@ -15,28 +15,26 @@ const UserPermits = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Fetch the permits from the API when the component loads
     const fetchPermits = async () => {
       try {
         const response = await fetch("/api/getPermits");
         const data = await response.json();
 
         if (response.ok) {
-          setPermits(data.permits); // Update the state with the fetched permits
+          setPermits(data.permits);
         } else {
           setError(data.error || "Error occurred while fetching permits.");
         }
       } catch (err) {
         setError("Unable to fetch permits. Please try again.");
       } finally {
-        setLoading(false); // Stop loading once data is fetched
+        setLoading(false);
       }
     };
 
-    fetchPermits(); // Call the function to fetch the permits
+    fetchPermits();
   }, []);
 
-  // Handle deleting a permit
   const handleDeletePermit = async (permitId: string) => {
     try {
       const response = await fetch("/api/deletePermit", {
@@ -44,13 +42,12 @@ const UserPermits = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ permitId }), // Send permit ID in request body
+        body: JSON.stringify({ permitId }),
       });
 
       const data = await response.json();
-      
+
       if (response.ok) {
-        // Filter out the deleted permit from the state
         setPermits(permits.filter((permit) => permit._id !== permitId));
       } else {
         setError(data.error || "Failed to delete the permit. Please try again.");
@@ -60,12 +57,10 @@ const UserPermits = () => {
     }
   };
 
-  // Show loading message while fetching data
   if (loading) {
     return <Text>Loading your permits...</Text>;
   }
 
-  // Show error message if there was an issue fetching or deleting permits
   if (error) {
     return <Text color="red.500">{error}</Text>;
   }
@@ -84,7 +79,6 @@ const UserPermits = () => {
           </Link>
         </Flex>
 
-        {/* Render the list of permits */}
         <Flex direction="column" gap={4}>
           {permits.length > 0 ? (
             permits.map((permit) => (
@@ -114,7 +108,6 @@ const UserPermits = () => {
                   </Box>
 
                   <Flex gap={3}>
-                    {/* Delete button to remove the permit */}
                     <Button
                       size="sm"
                       bg="red.400"
@@ -123,6 +116,15 @@ const UserPermits = () => {
                     >
                       Delete
                     </Button>
+                    <Link to={`/user/editPermit/${permit._id}`}>
+                      <Button
+                        size="sm"
+                        bg="blue.400"
+                        _hover={{ bg: "blue.500" }}
+                      >
+                        Edit
+                      </Button>
+                    </Link>
                   </Flex>
                 </Flex>
               </Box>
