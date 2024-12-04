@@ -83,6 +83,10 @@ const ParkingFinder: React.FC = () => {
   };
 
   const findMatchingPermit = (garagePermits: string[], userPermits: string[]) => {
+    if (!Array.isArray(garagePermits)) {
+      return 'No Matching Permit';
+    }
+  
     for (const permit of garagePermits) {
       if (userPermits.includes(permit)) {
         return permit;
