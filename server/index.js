@@ -8,6 +8,7 @@ const { setPermit, deletePermit, getPermits, getPermitStrings, editPermit } = re
 const fetchDistance = require('./controllers/distance');
 const checkPermits = require('./controllers/checkPermit');
 const app = express();
+require('dotenv').config();
 
 app.use(express.json());
 
