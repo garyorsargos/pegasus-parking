@@ -33,22 +33,22 @@ connectToDatabase();
 passportConfig(passport);
 
 // login/register/logout a user
-app.use('/api/login', login);
-app.use('/api/register', register);
-app.use('/api/logout', logout);
-app.use('/api/getUserInfo', getUserInfo);
+app.use('/login', login);
+app.use('/register', register);
+app.use('/logout', logout);
+app.use('/getUserInfo', getUserInfo);
 
 //Google map distance calculation
-app.use('/api/fetchDistance', fetchDistance);
+app.use('/fetchDistance', fetchDistance);
 
 //Permit API calls
-app.use('/api/setPermit', setPermit);
-app.use('/api/deletePermit', deletePermit);
-app.use('/api/checkPermits', checkPermits);
-app.use('/api/getPermits', getPermits);
-app.use('/api/getPermitStrings', getPermitStrings);
+app.use('/setPermit', setPermit);
+app.use('/deletePermit', deletePermit);
+app.use('/checkPermits', checkPermits);
+app.use('/getPermits', getPermits);
+app.use('/getPermitStrings', getPermitStrings);
 
-app.get('/api/test', (req, res) => {
+app.get('/test', (req, res) => {
       res.send('Application Route Returned')
 });
 
