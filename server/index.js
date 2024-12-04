@@ -4,7 +4,7 @@ const session = require('express-session');
 const connectToDatabase = require('./config/mongodb');
 const passportConfig = require('./config/passport');
 const { login, register, logout, getUserInfo } = require("./controllers/auth");
-const { setPermit, deletePermit, getPermits, getPermitStrings } = require('./controllers/permit');
+const { setPermit, deletePermit, getPermits, getPermitStrings, editPermit } = require('./controllers/permit');
 const fetchDistance = require('./controllers/distance');
 const checkPermits = require('./controllers/checkPermit');
 const app = express();
@@ -47,6 +47,7 @@ app.use('/deletePermit', deletePermit);
 app.use('/checkPermits', checkPermits);
 app.use('/getPermits', getPermits);
 app.use('/getPermitStrings', getPermitStrings);
+app.use('/editPermit', editPermit);
 
 app.get('/test', (req, res) => {
       res.send('Application Route Returned')
