@@ -3,7 +3,7 @@ const passport = require('passport');
 const session = require('express-session');
 const connectToDatabase = require('./config/mongodb');
 const passportConfig = require('./config/passport');
-const { login, register, logout, getUserInfo, deleteAccount } = require("./controllers/auth");
+const { login, register, logout, getUserInfo } = require("./controllers/auth");
 const { setPermit, deletePermit, getPermits, getPermitStrings } = require('./controllers/permit');
 const fetchDistance = require('./controllers/distance');
 const checkPermits = require('./controllers/checkPermit');
@@ -33,23 +33,22 @@ connectToDatabase();
 passportConfig(passport);
 
 // login/register/logout a user
-app.use('/login', login);
-app.use('/register', register);
-app.use('/logout', logout);
-app.use('/getUserInfo', getUserInfo);
-app.use('/deleteAccount', deleteAccount);
+app.use('/api/login', login);
+app.use('/api/register', register);
+app.use('/api/logout', logout);
+app.use('/api/getUserInfo', getUserInfo);
 
 //Google map distance calculation
-app.use('/fetchDistance', fetchDistance);
+app.use('/api/fetchDistance', fetchDistance);
 
 //Permit API calls
-app.use('/setPermit', setPermit);
-app.use('/deletePermit', deletePermit);
-app.use('/checkPermits', checkPermits);
-app.use('/getPermits', getPermits);
-app.use('/getPermitStrings', getPermitStrings)
+app.use('/api/setPermit', setPermit);
+app.use('/api/deletePermit', deletePermit);
+app.use('/api/checkPermits', checkPermits);
+app.use('/api/getPermits', getPermits);
+app.use('/api/getPermitStrings', getPermitStrings);
 
-app.get('/test', (req, res) => {
+app.get('/api/test', (req, res) => {
       res.send('Application Route Returned')
 });
 
