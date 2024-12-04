@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useMessage } from "../context/messageContext";
 import { MessageTypes } from "../utils/messageTypes";
+import Message from "../components/ui/message";
 
 const Login = () => {
   const [username, setUsername] = useState<string>("");
