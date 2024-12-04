@@ -13,7 +13,7 @@ require('dotenv').config();
 app.use(express.json());
 
 app.use(session({
-  secret: 'g3rb3r1$cr4zy*()43', // random key I made, should be changed
+  secret: process.env.AUTH_SECRET,
   resave: false,
   saveUninitialized: true,
   // uncomment when used on https
