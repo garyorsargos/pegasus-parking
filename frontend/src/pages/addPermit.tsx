@@ -6,7 +6,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useMessage } from "../context/messageContext";
 import { MessageTypes } from "../utils/messageTypes";
@@ -15,7 +15,12 @@ const AddPermit = () => {
   const [vehicleName, setVehicleName] = useState<string>("");
   const [permitType, setPermitType] = useState<string>("");
   const [expirationDate, setExpirationDate] = useState<string>("");
-  const { setMessage, showMessage } = useMessage();
+  const { setMessage, showMessage, hideMessage } = useMessage();
+
+  useEffect(() => {
+    hideMessage("addPermitMessage");
+    return () => hideMessage("addPermitMessage");
+  }, [hideMessage]);
 
   const handleSubmit = async () => {
     if (!vehicleName || !permitType || !expirationDate) {

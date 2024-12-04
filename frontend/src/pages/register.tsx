@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Box, Heading, Input, Button, Stack, Text } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -11,7 +11,12 @@ const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const { setMessage, showMessage } = useMessage();
+  const { setMessage, showMessage, hideMessage } = useMessage();
+
+  useEffect(() => {
+    hideMessage("registerMessage");
+    return () => hideMessage("registerMessage");
+  }, [hideMessage]);
 
   const handleRegister = async () => {
     try {

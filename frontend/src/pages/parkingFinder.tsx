@@ -25,7 +25,18 @@ const ParkingFinder: React.FC = () => {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: 'AIzaSyCSxW_PMdBUPdNmdJYsp070JP0CRHrlJrA',
   });
-  const { setMessage, showMessage } = useMessage();
+  const { setMessage, showMessage, hideMessage } = useMessage();
+
+  useEffect(() => {
+    hideMessage("fetchDistanceMessage");
+    hideMessage("fetchPermitsMessage");
+    hideMessage("fetchDataMessage");
+    return () => {
+      hideMessage("fetchDistanceMessage");
+      hideMessage("fetchPermitsMessage");
+      hideMessage("fetchDataMessage");
+    };
+  }, [hideMessage]);
 
   const containerStyle = { width: '95%', height: '95%' };
   const center = { lat: 28.6024, lng: -81.2001 };

@@ -15,8 +15,17 @@ const UserPermits = () => {
   const [permits, setPermits] = useState<Permit[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { setMessage, showMessage } = useMessage();
+  const { setMessage, showMessage, hideMessage } = useMessage();
 
+  useEffect(() => {
+    hideMessage("fetchPermitsMessage");
+    hideMessage("deletePermitMessage");
+    return () => {
+      hideMessage("fetchPermitsMessage");
+      hideMessage("deletePermitMessage");
+    };
+  }, [hideMessage]);
+  
   useEffect(() => {
     const fetchPermits = async () => {
       try {

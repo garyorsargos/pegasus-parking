@@ -19,7 +19,12 @@ const EditPermit = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const { permitId } = useParams<{ permitId: string }>();
   const navigate = useNavigate();
-  const { setMessage, showMessage } = useMessage();
+  const { setMessage, showMessage, hideMessage } = useMessage();
+
+  useEffect(() => {
+    hideMessage("editPermitMessage");
+    return () => hideMessage("editPermitMessage");
+  }, [hideMessage]);
 
   useEffect(() => {
     const fetchPermitDetails = async () => {
