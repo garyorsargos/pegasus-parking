@@ -20,6 +20,7 @@ const ParkingFinder: React.FC = () => {
   const [garageData, setGarageData] = useState<GarageData[]>([]);
   const [userPermits, setUserPermits] = useState<string[]>([]);
   const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(null);
+  const [noPermitsMessage, setNoPermitsMessage] = useState(false);
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: 'AIzaSyCSxW_PMdBUPdNmdJYsp070JP0CRHrlJrA',
   });
@@ -50,10 +51,20 @@ const ParkingFinder: React.FC = () => {
           if (fetchDistanceResponse.ok) {
             const distanceData: GarageData[] = await fetchDistanceResponse.json();
             setGarageData(distanceData);
+
+            // If no garages were added, display the message
+            if (distanceData.length === 0) {
+              setNoPermitsMessage(true);
+            } else {
+              setNoPermitsMessage(false);
+            }
           }
+        } else {
+          setNoPermitsMessage(true);
         }
       } catch (error) {
         console.error('Error fetching data:', error);
+        setNoPermitsMessage(true);
       }
     }
   };
@@ -74,16 +85,24 @@ const ParkingFinder: React.FC = () => {
   return (
     <div className="parking-finder-container">
       <div className="sidebar">
-        {garageData.map((garage, index) => (
-          <Card
-            key={index}
-            garageName={garage.garage}
-            permitType={`${findMatchingPermit(garage.permits, userPermits)} PERMIT`}
-            travelTime={`${garage.time} minutes`}
-            distanceInMiles={garage.distance.toFixed(2)} // Original logic restored
-            directionsLink={`https://www.google.com/maps?q=${garage.latitude},${garage.longitude}`} // Links to garage coordinates
-          />
-        ))}
+        {garageData.length > 0 ? (
+          garageData.map((garage, index) => (
+            <Card
+              key={index}
+              garageName={garage.garage}
+              permitType={`${findMatchingPermit(garage.permits, userPermits)} PERMIT`}
+              travelTime={`${garage.time} minutes`}
+              distanceInMiles={garage.distance.toFixed(2)}
+              directionsLink={`https://www.google.com/maps?q=${garage.latitude},${garage.longitude}`}
+            />
+          ))
+        ) : (
+          noPermitsMessage ? (
+            <p>Please add a Permit First</p>
+          ) : (
+            <p>Please Select your Destination</p>
+          )
+        )}
       </div>
       <div className="main-content">
         <GoogleMap
@@ -101,4 +120,3 @@ const ParkingFinder: React.FC = () => {
 };
 
 export default ParkingFinder;
-
