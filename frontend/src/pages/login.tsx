@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Box, Heading, Input, Button, Stack, Text } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+// import ErrorMessage from "./ErrorMessage"; // Import the error message component
 
 const Login = () => {
   const [username, setUsername] = useState<string>("");
@@ -9,21 +10,18 @@ const Login = () => {
   const navigate = useNavigate(); // Hook for programmatic navigation
 
   const handleLogin = async () => {
-  try {
-    const response = await axios.post(
-      "https://parking.garyorsargos.xyz/api/login",
-      { username, password }, // Use POST body for credentials
-      { withCredentials: true } // Include cookies
-    );
-
-    if (response.status === 200) {
+    try {
+      await axios.post(
+        "https://parking.garyorsargos.xyz/api/login",
+        { username, password }, // Use POST body for credentials
+        { withCredentials: true } // Include cookies
+      );
       navigate("/user/parking");
+    } catch (error) {
+      // Show error message
+      console.error("Error logging in:", error);
     }
-    console.log("Login successful:", response.data);
-  } catch (error) {
-    console.error("Error logging in:", error);
-  }
-};
+  };
 
   return (
     <Box
