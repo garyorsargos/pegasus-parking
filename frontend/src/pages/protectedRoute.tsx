@@ -1,7 +1,7 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useMessage } from '../context/MessageContext';
+import { useMessage } from '../context/messageContext';
 import { MessageTypes } from '../utils/messageTypes';
 
 const ProtectedRoute = () => {

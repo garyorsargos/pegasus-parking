@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import axios from "axios";
-import { useMessage } from "../context/MessageContext";
+import { useMessage } from "../context/messageContext";
 import { MessageTypes } from "../utils/messageTypes";
 
 const AddPermit = () => {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Box, Flex, Badge, Text, Button, Heading } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { useMessage } from "../context/MessageContext";
+import { useMessage } from "../context/messageContext";
 import { MessageTypes } from "../utils/messageTypes";
 
 interface Permit {

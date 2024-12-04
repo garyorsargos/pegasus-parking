@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import Card from '../components/ui/card';
-import { useMessage } from '../context/MessageContext';
+import { useMessage } from '../context/messageContext';
 import { MessageTypes } from '../utils/messageTypes';
 import '../components/ui/styles/parkingFinder.css';
 

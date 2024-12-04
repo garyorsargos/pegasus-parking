@@ -2,7 +2,7 @@ import axios from "axios";
 import { Button, Box, Heading } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import { IoLogOut } from "react-icons/io5";
-import { useMessage } from "../context/MessageContext";
+import { useMessage } from "../context/messageContext";
 import { MessageTypes } from "../utils/messageTypes";
 
 const Navbar = () => {

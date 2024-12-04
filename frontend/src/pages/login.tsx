@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Box, Heading, Input, Button, Stack, Text } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useMessage } from "../context/MessageContext";
+import { useMessage } from "../context/messageContext";
 import { MessageTypes } from "../utils/messageTypes";
 
 const Login = () => {
