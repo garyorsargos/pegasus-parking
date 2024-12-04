@@ -43,9 +43,9 @@ const ParkingFinder: React.FC = () => {
           method: "GET",
           headers: { "Content-Type": "application/json" },
         });
-        if (permitsResponse.ok) {
-          const permitsData = await permitsResponse.json();
-          const permitList = permitsData.permits;
+        const permitsData = await permitsResponse.json();
+        if (permitsResponse.ok && permitsData.success) {
+          const permitList = permitsData.data;
           setUserPermits(permitList);
 
           const fetchDistanceResponse = await fetch("/api/fetchDistance", {
@@ -58,16 +58,17 @@ const ParkingFinder: React.FC = () => {
             }),
           });
 
-          if (fetchDistanceResponse.ok) {
-            const distanceData: GarageData[] =
-              await fetchDistanceResponse.json();
-            setGarageData(distanceData);
+          const distanceData = await fetchDistanceResponse.json();
+          if (fetchDistanceResponse.ok && distanceData.success) {
+            setGarageData(distanceData.data);
 
-            if (distanceData.length === 0) {
+            if (distanceData.data.length === 0) {
               setNoPermitsMessage(true);
             } else {
               setNoPermitsMessage(false);
             }
+          } else {
+            setNoPermitsMessage(true);
           }
         } else {
           setNoPermitsMessage(true);

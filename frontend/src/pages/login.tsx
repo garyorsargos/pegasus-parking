@@ -1,25 +1,45 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Box, Heading, Input, Button, Stack, Text } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-// import ErrorMessage from "./ErrorMessage"; // Import the error message component
+import { useMessage } from "../context/messageContext";
+import { MessageTypes } from "../utils/messageTypes";
+import Message from "../components/ui/message";
 
 const Login = () => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const navigate = useNavigate(); // Hook for programmatic navigation
+  const navigate = useNavigate();
+  const { setMessage, showMessage, hideMessage } = useMessage();
+
+  useEffect(() => {
+    hideMessage("loginMessage");
+    return () => hideMessage("loginMessage");
+  }, []);
 
   const handleLogin = async () => {
     try {
-      await axios.post(
-        "https://parking.garyorsargos.xyz/api/login",
-        { username, password }, // Use POST body for credentials
-        { withCredentials: true } // Include cookies
+      const response = await axios.post(
+        "/api/login",
+        { username, password },
+        { withCredentials: true }
       );
-      navigate("/user/parking");
+
+      if (response.data.success) {
+        if (response.data.message) {
+          setMessage("loginMessage", response.data.message.type, response.data.message.message);
+          showMessage("loginMessage");
+        }
+        navigate("/user/parking");
+      } else {
+        if (response.data.message) {
+          setMessage("loginMessage", response.data.message.type, response.data.message.message);
+          showMessage("loginMessage");
+        }
+      }
     } catch (error) {
-      // Show error message
-      console.error("Error logging in:", error);
+      setMessage("loginMessage", MessageTypes.ERROR, "An unexpected error occurred.");
+      showMessage("loginMessage");
     }
   };
 
@@ -75,6 +95,7 @@ const Login = () => {
         >
           Login
         </Button>
+        <Message id="loginMessage" />
       </Stack>
       <Text mt={4}>
         <Link

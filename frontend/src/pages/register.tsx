@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Box, Heading, Input, Button, Stack, Text } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useMessage } from "../context/messageContext";
+import { MessageTypes } from "../utils/messageTypes";
 
 const Register = () => {
   const [firstName, setFirstName] = useState("");
@@ -9,19 +11,32 @@ const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { setMessage, showMessage, hideMessage } = useMessage();
+
+  useEffect(() => {
+    hideMessage("registerMessage");
+    return () => hideMessage("registerMessage");
+  }, []);
 
   const handleRegister = async () => {
     try {
       const response = await axios.post(
-        "https://parking.garyorsargos.xyz/api/register",
+        "/api/register",
         { firstName, lastName, userName: username, password },
         { withCredentials: true }
       );
 
-      if (response.status === 200) {
+      if (response.data.success) {
+        setMessage("registerMessage", response.data.message?.type || MessageTypes.SUCCESS, response.data.message?.message || "Registration successful.");
+        showMessage("registerMessage");
         navigate("/");
+      } else {
+        setMessage("registerMessage", response.data.message?.type || MessageTypes.ERROR, response.data.message?.message || "Registration failed.");
+        showMessage("registerMessage");
       }
     } catch (error) {
+      setMessage("registerMessage", MessageTypes.ERROR, "An error occurred during registration. Please try again.");
+      showMessage("registerMessage");
       console.error("Error registering:", error);
     }
   };
@@ -106,4 +121,3 @@ const Register = () => {
 };
 
 export default Register;
-

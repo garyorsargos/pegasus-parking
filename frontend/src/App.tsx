@@ -7,7 +7,7 @@ import MyPermits from './pages/myPermits';
 import ParkingFinder from './pages/parkingFinder';
 import Navbar from './components/ui/navbar';
 import AddPermit from "./pages/addPermit";
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "./pages/protectedRoute";
 import './App.css';
 import EditPermit from "./pages/editPermit";
 

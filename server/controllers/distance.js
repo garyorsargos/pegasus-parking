@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Garages = require('../models/garage');
+const createApiResponse = require('../utils/apiResponse');
 
 //if you want to test the postman your self use this json:
 //{
@@ -13,10 +14,10 @@ const fetchDistance = async (req, res) => {
     const url = "https://routes.googleapis.com/directions/v2:computeRoutes";
 
     // find garages with permits in permitList
-    const garages = await Garages.find({ permit: { $in: permitList } });;
+    const garages = await Garages.find({ permit: { $in: permitList } });
 
     if (!destinationLat || !destinationLng) {
-        return res.status(404).json({ error: "Enter a Latitude and Longitude." });
+        return res.status(404).json(createApiResponse(false, "ERROR", "Enter a Latitude and Longitude."));
     }
     const result = [];
 
@@ -76,7 +77,7 @@ const fetchDistance = async (req, res) => {
     result.sort((a, b) => a.distance - b.distance);
 
     // returns encoded polyine for rendering route, distance in miles, time in minutes and seconds
-    res.json(result);
+    res.json(createApiResponse(true, null, null, result));
 }
 
 module.exports = fetchDistance;
