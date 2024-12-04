@@ -22,9 +22,9 @@ const Navbar = () => {
     <div>
       <Box h="8vh" display="flex" alignItems="center" justifyContent="space-between" bg="black">
         <Heading p="4" size="4xl" color="#FFC904">Pegasus Parking</Heading>
-        <Box h="100%">
+        <Box h="100%" display="flex" alignItems="center" justifyContent="space-between">
           <Heading p="4" size="4xl" color="#FFC904">Pegasus Parking</Heading>
-          <Image src="/favicon/android-chrome-512x512.png" alt="Logo Icon" maxH="90%" width="auto"/>
+          <Image src="/favicon/android-chrome-512x512.png" alt="Logo Icon" maxH="75%" width="auto"/>
         </Box>
         <Box p="4" display="flex" minWidth="25vw" maxWidth="50vw">
           <Link to="/user/parking">
