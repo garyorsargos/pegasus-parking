@@ -40,7 +40,7 @@ function Main() {
           <Route path="/user/settings" element={<UserSettings />} />
           <Route path="/user/permits" element={<MyPermits />} />
           <Route path="/user/addPermit" element={<AddPermit />} />
-          <Route path="/user/editPermit" element={<EditPermit />} />
+          <Route path="/user/editPermit/:permitId" element={<EditPermit />} />
         </Route>
       </Routes>
     </>
