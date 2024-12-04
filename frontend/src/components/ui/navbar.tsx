@@ -21,9 +21,9 @@ const Navbar = () => {
   return (
     <div>
       <Box h="8vh" display="flex" alignItems="center" justifyContent="space-between" bg="black">
-        <Box p="4">
+        <Box h="100%">
           <Heading p="4" size="4xl" color="#FFC904">Pegasus Parking</Heading>
-          <Image src="/favicon/android-chrome-512x512.png" alt="Logo Icon" maxH="90%" width="auto"/>
+          <Image p="4" objectFit="contain" src="/favicon/android-chrome-512x512.png" alt="Logo Icon" maxH="90%" width="auto"/>
         </Box>
         <Box p="4" display="flex" minWidth="25vw" maxWidth="50vw">
           <Link to="/user/parking">
