@@ -111,9 +111,46 @@ const deletePermit = async (req, res) => {
   }
 };
 
+const editPermit = async (req, res) => {
+  try {
+    const { permitId, permit, licence, expiration } = req.body;
+    const userId = req.user.userId;
+
+    if (!permitId || !permit || !licence || !expiration) {
+      return res.status(400).json({ error: "All fields are required." });
+    }
+
+    // Check if the user exists
+    const user = await Users.findOne({ userId: userId });
+    if (!user || !user.permits.includes(permitId)) {
+      return res.status(401).json({ error: "User not authorized to edit this permit." });
+    }
+
+    // Update the permit
+    const updatedPermit = await Permits.findByIdAndUpdate(
+      permitId,
+      { permit, licence, expiration },
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedPermit) {
+      return res.status(404).json({ error: "Permit not found." });
+    }
+
+    return res.status(200).json({
+      message: "Permit updated successfully!",
+      permit: updatedPermit,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "An error occurred while updating the permit." });
+  }
+};
+
 module.exports = {
   setPermit,
   deletePermit,
   getPermits,
   getPermitStrings,
+  editPermit,
 };
