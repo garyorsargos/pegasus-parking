@@ -37,7 +37,7 @@ const fetchDistance = async (req, res) => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "X-Goog-Api-Key": "AIzaSyCSxW_PMdBUPdNmdJYsp070JP0CRHrlJrA",
+                    "X-Goog-Api-Key": process.env.API_KEY,
                     "X-Goog-FieldMask": "routes.distanceMeters,routes.duration,routes.polyline.encodedPolyline",
                 },
                 body: JSON.stringify(body),

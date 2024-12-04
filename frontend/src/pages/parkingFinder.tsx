@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
-import { Text } from '@chakra-ui/react';
-import Card from '../components/ui/card';
-import '../components/ui/styles/parkingFinder.css';
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import { Text } from "@chakra-ui/react";
+import Card from "../components/ui/card";
+import "../components/ui/styles/parkingFinder.css";
 
 type GarageData = {
   garage: string;
@@ -17,16 +17,18 @@ type GarageData = {
 
 const ParkingFinder: React.FC = () => {
   const location = useLocation();
+  const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
   const [mapKey, setMapKey] = useState(0);
   const [garageData, setGarageData] = useState<GarageData[]>([]);
   const [userPermits, setUserPermits] = useState<string[]>([]);
-  const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(null);
+  const [markerPosition, setMarkerPosition] =
+    useState<google.maps.LatLngLiteral | null>(null);
   const [noPermitsMessage, setNoPermitsMessage] = useState(false);
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: 'AIzaSyCSxW_PMdBUPdNmdJYsp070JP0CRHrlJrA',
+    googleMapsApiKey: apiKey,
   });
 
-  const containerStyle = { width: '95%', height: '95%' };
+  const containerStyle = { width: "95%", height: "95%" };
   const center = { lat: 28.6024, lng: -81.2001 };
 
   const handleMapClick = async (event: google.maps.MapMouseEvent) => {
@@ -37,20 +39,28 @@ const ParkingFinder: React.FC = () => {
       setMarkerPosition({ lat: clickedLat, lng: clickedLng });
 
       try {
-        const permitsResponse = await fetch('/api/getPermitStrings', { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+        const permitsResponse = await fetch("/api/getPermitStrings", {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
         if (permitsResponse.ok) {
           const permitsData = await permitsResponse.json();
           const permitList = permitsData.permits;
           setUserPermits(permitList);
 
-          const fetchDistanceResponse = await fetch('/api/fetchDistance', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ permitList, destinationLat: clickedLat, destinationLng: clickedLng }),
+          const fetchDistanceResponse = await fetch("/api/fetchDistance", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              permitList,
+              destinationLat: clickedLat,
+              destinationLng: clickedLng,
+            }),
           });
 
           if (fetchDistanceResponse.ok) {
-            const distanceData: GarageData[] = await fetchDistanceResponse.json();
+            const distanceData: GarageData[] =
+              await fetchDistanceResponse.json();
             setGarageData(distanceData);
 
             if (distanceData.length === 0) {
@@ -63,19 +73,22 @@ const ParkingFinder: React.FC = () => {
           setNoPermitsMessage(true);
         }
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
         setNoPermitsMessage(true);
       }
     }
   };
 
-  const findMatchingPermit = (garagePermits: string[], userPermits: string[]) => {
+  const findMatchingPermit = (
+    garagePermits: string[],
+    userPermits: string[],
+  ) => {
     for (const permit of garagePermits) {
       if (userPermits.includes(permit)) {
         return permit;
       }
     }
-    return 'No Matching Permit';
+    return "No Matching Permit";
   };
 
   useEffect(() => setMapKey((prev) => prev + 1), [location]);

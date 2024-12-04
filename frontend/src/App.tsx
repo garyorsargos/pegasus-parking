@@ -11,7 +11,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import './App.css';
 import EditPermit from "./pages/editPermit";
 
-const GOOGLE_MAPS_API_KEY = "AIzaSyCSxW_PMdBUPdNmdJYsp070JP0CRHrlJrA";
+const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 function App() {
   return (
