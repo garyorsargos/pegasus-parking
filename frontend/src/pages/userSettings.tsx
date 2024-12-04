@@ -7,19 +7,42 @@ class UserSettings extends Component {
   state = {
     username: '',
     firstName: '',
-    lastName: ''
+    lastName: '',
   };
 
   componentDidMount() {
     axios.get('/api/getUserInfo')
-      .then(response => {
+      .then((response) => {
         const { username, firstName, lastName } = response.data;
         this.setState({ username, firstName, lastName });
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error fetching user info:', error);
       });
   }
+
+  handleLogout = async () => {
+    try {
+      await axios.post('/api/logout');
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Error logging out:', error);
+      alert('Failed to log out. Please try again.');
+    }
+  };
+
+  handleDeleteAccount = async () => {
+    const confirmed = window.confirm('Are you sure you want to delete your account? This is PERMANENT!');
+    if (confirmed) {
+      try {
+        await axios.delete('/api/deleteAccount');
+        window.location.href = '/';
+      } catch (error) {
+        console.error('Error deleting account:', error);
+        alert('Failed to delete account. Please try again.');
+      }
+    }
+  };
 
   render() {
     const { username, firstName, lastName } = this.state;
@@ -35,7 +58,6 @@ class UserSettings extends Component {
               objectFit="cover"
             />
           </Box>
-
           <Heading as="h1" size="2xl" className="user-heading">
             {firstName} {lastName}
           </Heading>
@@ -44,12 +66,15 @@ class UserSettings extends Component {
               <strong>Username:</strong> {username}
             </Text>
           </Stack>
-
           <Flex className="user-buttons">
-            <Button className="logout-button" size="lg">
+            <Button className="logout-button" size="lg" onClick={this.handleLogout}>
               Logout
             </Button>
-            <Button className="delete-account-button" size="lg">
+            <Button
+              className="delete-account-button"
+              size="lg"
+              onClick={this.handleDeleteAccount}
+            >
               Delete Account
             </Button>
           </Flex>

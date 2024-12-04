@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
+import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import Card from '../components/ui/card';
 import '../components/ui/styles/parkingFinder.css';
 
@@ -9,6 +9,8 @@ type GarageData = {
   permits: string[];
   distance: number;
   time: string;
+  latitude: number;
+  longitude: number;
   polyline?: string;
 };
 
@@ -17,6 +19,7 @@ const ParkingFinder: React.FC = () => {
   const [mapKey, setMapKey] = useState(0);
   const [garageData, setGarageData] = useState<GarageData[]>([]);
   const [userPermits, setUserPermits] = useState<string[]>([]);
+  const [markerPosition, setMarkerPosition] = useState<google.maps.LatLngLiteral | null>(null);
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: 'AIzaSyCSxW_PMdBUPdNmdJYsp070JP0CRHrlJrA',
   });
@@ -29,6 +32,8 @@ const ParkingFinder: React.FC = () => {
     const clickedLng = event.latLng?.lng();
 
     if (clickedLat && clickedLng) {
+      setMarkerPosition({ lat: clickedLat, lng: clickedLng });
+
       try {
         const permitsResponse = await fetch('/api/getPermitStrings', { method: 'GET', headers: { 'Content-Type': 'application/json' } });
         if (permitsResponse.ok) {
@@ -39,11 +44,11 @@ const ParkingFinder: React.FC = () => {
           const fetchDistanceResponse = await fetch('/api/fetchDistance', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ permitList: permitList, destinationLat: clickedLat, destinationLng: clickedLng }),
+            body: JSON.stringify({ permitList, destinationLat: clickedLat, destinationLng: clickedLng }),
           });
 
           if (fetchDistanceResponse.ok) {
-            const distanceData = await fetchDistanceResponse.json();
+            const distanceData: GarageData[] = await fetchDistanceResponse.json();
             setGarageData(distanceData);
           }
         }
@@ -75,8 +80,8 @@ const ParkingFinder: React.FC = () => {
             garageName={garage.garage}
             permitType={`${findMatchingPermit(garage.permits, userPermits)} PERMIT`}
             travelTime={`${garage.time} minutes`}
-            distanceInMiles={garage.distance.toFixed(2)}
-            directionsLink="https://www.google.com/maps"
+            distanceInMiles={garage.distance.toFixed(2)} // Original logic restored
+            directionsLink={`https://www.google.com/maps?q=${garage.latitude},${garage.longitude}`} // Links to garage coordinates
           />
         ))}
       </div>
@@ -87,7 +92,9 @@ const ParkingFinder: React.FC = () => {
           center={center}
           zoom={16}
           onClick={handleMapClick}
-        />
+        >
+          {markerPosition && <Marker position={markerPosition} />}
+        </GoogleMap>
       </div>
     </div>
   );

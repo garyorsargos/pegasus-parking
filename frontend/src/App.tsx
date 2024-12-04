@@ -7,8 +7,7 @@ import MyPermits from './pages/myPermits';
 import ParkingFinder from './pages/parkingFinder';
 import Navbar from './components/ui/navbar';
 import AddPermit from "./pages/addPermit";
-import EditPermit from "./pages/editPermit";
-
+import ProtectedRoute from "./components/ProtectedRoute";
 import './App.css';
 
 const GOOGLE_MAPS_API_KEY = "AIzaSyCSxW_PMdBUPdNmdJYsp070JP0CRHrlJrA";
@@ -33,12 +32,14 @@ function Main() {
       {showNavbar && <Navbar />}
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/user/parking" element={<ParkingFinder />} />
-        <Route path="/user/settings" element={<UserSettings />} />
-        <Route path="/user/permits" element={<MyPermits />} />
-        <Route path="/user/addPermit" element={<AddPermit />} />
-        <Route path="/user/editPermit" element={<EditPermit />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/user/parking" element={<ParkingFinder />} />
+          <Route path="/user/settings" element={<UserSettings />} />
+          <Route path="/user/permits" element={<MyPermits />} />
+          <Route path="/user/addPermit" element={<AddPermit />} />
+        </Route>
       </Routes>
     </>
   );
