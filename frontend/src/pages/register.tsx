@@ -16,7 +16,7 @@ const Register = () => {
   useEffect(() => {
     hideMessage("registerMessage");
     return () => hideMessage("registerMessage");
-  }, [hideMessage]);
+  }, []);
 
   const handleRegister = async () => {
     try {

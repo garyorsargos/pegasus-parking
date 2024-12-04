@@ -24,7 +24,7 @@ const UserPermits = () => {
       hideMessage("fetchPermitsMessage");
       hideMessage("deletePermitMessage");
     };
-  }, [hideMessage]);
+  }, []);
   
   useEffect(() => {
     const fetchPermits = async () => {

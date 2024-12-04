@@ -20,7 +20,7 @@ const AddPermit = () => {
   useEffect(() => {
     hideMessage("addPermitMessage");
     return () => hideMessage("addPermitMessage");
-  }, [hideMessage]);
+  }, []);
 
   const handleSubmit = async () => {
     if (!vehicleName || !permitType || !expirationDate) {

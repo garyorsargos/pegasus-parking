@@ -36,7 +36,7 @@ const ParkingFinder: React.FC = () => {
       hideMessage("fetchPermitsMessage");
       hideMessage("fetchDataMessage");
     };
-  }, [hideMessage]);
+  }, []);
 
   const containerStyle = { width: '95%', height: '95%' };
   const center = { lat: 28.6024, lng: -81.2001 };

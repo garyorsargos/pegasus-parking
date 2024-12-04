@@ -24,7 +24,7 @@ const EditPermit = () => {
   useEffect(() => {
     hideMessage("editPermitMessage");
     return () => hideMessage("editPermitMessage");
-  }, [hideMessage]);
+  }, []);
 
   useEffect(() => {
     const fetchPermitDetails = async () => {

@@ -15,7 +15,7 @@ const Login = () => {
   useEffect(() => {
     hideMessage("loginMessage");
     return () => hideMessage("loginMessage");
-  }, [hideMessage]);
+  }, []);
 
   const handleLogin = async () => {
     try {
