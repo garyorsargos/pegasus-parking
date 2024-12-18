@@ -5,5 +5,5 @@ A parking app made to help students and faculty find the best places to park at 
 ### Tech Stack:
 - React (Built with Vite)
 - ChakraUI Components
-- ExpressJS w/ Axiom for Queries
+- ExpressJS w/ Axios for Queries
 - MongoDB w/ Mongoose for Interfacing
