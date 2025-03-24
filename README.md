@@ -143,32 +143,6 @@ The backend API includes the following main endpoints:
 
 Full API documentation is available in the server directory.
 
-## 🤝 Contributing
-
-We welcome contributions! Please follow these steps:
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 👥 Team
-
-- [Gary Orsargos](https://github.com/garyorsargos) - Project Lead & Full Stack Developer
-
-## 📞 Contact
-
-For questions and support, please reach out through:
-- GitHub Issues
-- [Project Discussion Board](https://github.com/garyorsargos/pegasus-parking/discussions)
-
-## 🙏 Acknowledgments
-
-- UCF for supporting this initiative
-- The open-source community
-- Contributors and testers who have helped improve this project
