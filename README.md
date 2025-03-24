@@ -16,8 +16,6 @@
 - 📱 Responsive web application optimized for mobile use
 - 🗺️ Interactive campus parking map using Google Maps API
 - 🔐 User authentication and session management
-- 📊 Historical parking data analytics
-- ⏰ Peak hours prediction and notifications
 
 ## 🏗️ Project Structure
 
